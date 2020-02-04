@@ -3,9 +3,9 @@
 #include <string>
 #include <cmath>
 
-namespace matlib{ //Definition of classes
+namespace Matlib{ //Declaration of classes
     template<int r, int c>
-    class matrix;
+    class Matrix;
 
     class vec3;
     class vec4;
@@ -13,101 +13,103 @@ namespace matlib{ //Definition of classes
     class vec;
 }
 
-namespace matlib{
+namespace Matlib{
     template<int r, int c>
-    class matrix{
-        public:
+    class Matrix{
         double elems[r][c];
 
-        matrix(double vals[r][c]);
-        matrix(const matrix &m);
+        public:
+        Matrix();
+        Matrix(double vals[r][c]);
 
-        matrix operator= (const matrix &m); //For assignment to other variables
-        matrix operator= (const matrix m); //For assignment to evaluated matrices
+        Matrix(const Matrix &m);
+        Matrix operator= (const Matrix &m);
 
         double* operator [](int i);
 
         std::string to_string();
 
-        std::string size();
-
-        matrix copy();
-
-        matrix<c,r> transpose();
-
-        matrix add(matrix const &m);
-
-        matrix operator+(matrix const &m);
-
-        template<int t>
-        matrix<r,t> mult(matrix<c,t> &m);
-        template<int t>
-        matrix<r,t> operator* (matrix<c,t> &m);
+        struct Size{
+            int rows,columns;
+            std::string to_string(){
+                return std::to_string(rows) + 'x' + std::to_string(columns);
+            }
+        };
         
-        matrix mult(double s);
-        matrix operator* (double s);
+        Size size();
 
-        private:
-        matrix getLowerTriangle();
-        matrix getUpperTriangle();
+        Matrix copy();
+
+        Matrix<c,r> transpose();
+
+        Matrix add(Matrix const &m);
+        Matrix operator+(Matrix const &m);
+
+        template<int t>
+        Matrix<r,t> mult(const Matrix<c,t> &m);
+        template<int t>
+        Matrix<r,t> operator* (const Matrix<c,t> &m);
+        
+        Matrix mult(double s);
+        Matrix operator* (double s);
+
     };
 
     template<int n>
-    class matrix<n,n>{
-        public:
+    class Matrix<n,n>{
         double elems[n][n];
 
-        matrix(double vals[n][n]);
+        public:
+        Matrix();
+        Matrix(double vals[n][n]);
 
-        matrix(const matrix &m);
+        Matrix(const Matrix &m);
+        Matrix operator= (const Matrix &m);
 
-        matrix operator= (const matrix &m);
-
-        matrix operator= (const matrix m);
-
-        static matrix Identity();
+        static Matrix Identity();
 
         double* operator [](int i);
 
         std::string to_string();
-
         std::string size();
 
-        matrix copy();
+        Matrix copy();
 
-        matrix<n,n> transpose();
+        Matrix<n,n> transpose();
 
-        matrix add(matrix const &m);
-
-        matrix operator+(matrix const &m);
+        Matrix add(Matrix const &m);
+        Matrix operator+(Matrix const &m);
 
         template<int t>
-        matrix<n,t> mult(matrix<n,t> &m);
+        Matrix<n,t> mult(Matrix<n,t> &m);
         template<int t>
-        matrix<n,t> operator* (matrix<n,t> &m);
+        Matrix<n,t> operator* (Matrix<n,t> &m);
 
-        matrix mult(double s);
-        matrix operator* (double s);
+        Matrix mult(double s);
+        Matrix operator* (double s);
 
         double determinant();
 
-        matrix getMinors();
-        matrix getCofactor();
-        matrix getAdjugate();
-        matrix getInverse();
+        Matrix getMinors();
+        Matrix getCofactor();
+        Matrix getAdjugate();
+        Matrix getInverse();
+
+        private:
+        int getTriangle(Matrix* matOut);
     };
 }
 
-namespace matlib{
+namespace Matlib{
     class vec3{
         public:
         double x,y,z;
         
         vec3();
         vec3(double x, double y, double z);
-        vec3(matrix<3,1> m);
+        vec3(Matrix<3,1> m);
 
-        matrix<3,1> getMatrix();
+        Matrix<3,1> getMatrix();
         std::string to_string();
 
         double mag();
@@ -118,18 +120,18 @@ namespace matlib{
         double angleBetween(vec3 v);
 
 
-        vec3 transform(matrix<3,3> &m);
+        vec3 transform(Matrix<3,3> &m);
     };
     class vec4{
         public:
         double x,y,z,w;
         vec4(double x, double y, double z);
         vec4(vec3 v);
-        vec4(matrix<4,1> m);
+        vec4(Matrix<4,1> m);
 
-        matrix<4,1> getMatrix();
+        Matrix<4,1> getMatrix();
 
-        vec4 transform(matrix<4,4> &m);
+        vec4 transform(Matrix<4,4> &m);
     };
 }
 
