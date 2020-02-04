@@ -34,4 +34,5 @@
 
 tester.cpp
 templateTest.cpp
-matlibBackup.cpp
+matlibBackup*
+/.vscode
