@@ -30,3 +30,8 @@
 *.exe
 *.out
 *.app
+
+
+tester.cpp
+templateTest.cpp
+matlibBackup.cpp
