@@ -491,6 +491,30 @@ namespace Matlib{ //NxN Matrix Definitions
 
 }
 
+namespace Matlib{ //Specialize Certain Square Matrices
+    template<>
+    Matrix<1,1> Matrix<1,1>::Inverse(){
+        double v[1][1] = {{1/elems[0][0]}};
+        return Matrix(v);
+    }
+
+    template<>
+    Matrix<1,1> Matrix<1,1>::Inverse(int* err){
+        if (fabs(elems[0][0]) < MATLIB_FLOAT_TOLERANCE) {
+            *err = 1;
+            return Matrix();
+        }
+        *err = 0;
+        double v[1][1] = {{1/elems[0][0]}};
+        return Matrix(v);
+    }
+
+    template<>
+    double Matrix<1,1>::determinant(){
+        return elems[0][0];
+    }
+}
+
 namespace Matlib{ //Vector Class Member Declaration and Definitions
     class vec3{
         public:
