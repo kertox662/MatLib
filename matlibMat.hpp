@@ -3,7 +3,10 @@
 
 #include <string>
 #include <cmath>
+
+#ifndef MATLIB_FLOAT_TOLERANCE
 #define MATLIB_FLOAT_TOLERANCE 0.000000001
+#endif
 
 namespace Matlib{ //Declaration of classes
     template<int r, int c>
@@ -44,6 +47,12 @@ namespace Matlib{ //Matrix Class Member Declerations
 
         Matrix add(Matrix &m);
         Matrix operator+(Matrix &m);
+
+        Matrix sub(Matrix &m);
+        Matrix operator-(Matrix &m);
+
+        Matrix neg();
+        Matrix operator-();
 
         template<int t>
         Matrix<r,t> mult(Matrix<c,t> &m);
@@ -87,6 +96,12 @@ namespace Matlib{ //Matrix Class Member Declerations
 
         Matrix add(Matrix &m);
         Matrix operator+(Matrix &m);
+
+        Matrix sub(Matrix &m);
+        Matrix operator-(Matrix &m);
+
+        Matrix neg();
+        Matrix operator-();
 
         template<int t>
         Matrix<n,t> mult(Matrix<n,t> &m);
@@ -255,6 +270,38 @@ namespace Matlib{ //NxM Matrix Definitions
     }
 
     template<int r, int c>
+    Matrix<r,c> Matrix<r,c>::sub(Matrix &m){
+        Matrix result = copy();
+        for(int i = 0; i < r; i++){
+            for(int j = 0; j < c; j++){
+                result[i][j] -= m[i][j];
+            }
+        }
+        return result;
+    }
+
+    template<int r, int c>
+    Matrix<r,c> Matrix<r,c>::operator-(Matrix &m){
+        return sub(m);
+    }
+
+    template<int r, int c>
+    Matrix<r,c> Matrix<r,c>::neg(){
+        Matrix result = copy();
+        for(int i = 0; i < r; i++){
+            for(int j = 0; j < c; j++){
+                result[i][j] *= -1;
+            }
+        }
+        return result;
+    }
+
+    template<int r, int c>
+    Matrix<r,c> Matrix<r,c>::operator-(){
+        return neg();
+    }
+
+    template<int r, int c>
     template<int t>
     Matrix<r,t> Matrix<r,c>::mult(Matrix<c,t> &m){
         double vals[r][t];
@@ -385,6 +432,38 @@ namespace Matlib{ //NxN Matrix Definitions
     template<int n>
     Matrix<n,n> Matrix<n,n>::operator+(Matrix &m){
         return add(m);
+    }
+
+    template<int n>
+    Matrix<n,n> Matrix<n,n>::sub(Matrix &m){
+        Matrix result = copy();
+        for(int i = 0; i < n; i++){
+            for(int j = 0; j < n; j++){
+                result[i][j] -= m[i][j];
+            }
+        }
+        return result;
+    }
+
+    template<int n>
+    Matrix<n,n> Matrix<n,n>::operator-(Matrix &m){
+        return sub(m);
+    }
+
+    template<int n>
+    Matrix<n,n> Matrix<n,n>::neg(){
+        Matrix result = copy();
+        for(int i = 0; i < n; i++){
+            for(int j = 0; j < n; j++){
+                result[i][j] *= -1;
+            }
+        }
+        return result;
+    }
+
+    template<int n>
+    Matrix<n,n> Matrix<n,n>::operator-(){
+        return neg();
     }
 
     template<int n>
