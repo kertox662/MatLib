@@ -508,6 +508,32 @@ namespace Matlib{ //Specialize Certain Square Matrices
     double Matrix<1,1>::determinant(){
         return elems[0][0];
     }
+
+    template<> //Calculates Determinant of 2x2 matrix using an easier formula
+    double Matrix<2,2>::determinant(){
+        return elems[0][0] * elems[1][1] - elems[1][0] * elems[0][1];
+    }
+
+    template<> //Calculates Determinant of 3x3 matrix using the rule of Sarrus
+    double Matrix<3,3>::determinant(){
+        double s = 0;
+        double extended[3][5];
+        for(int i = 0; i < 3; i++){
+            for(int j = 0; j < 5; j++){
+                extended[i][j] = elems[i][j%3];
+            }
+        }
+        for(int off = 0; off < 3; off++){
+            double a = 1, b = 1;
+            for(int i = 0; i < 3; i++){
+                a *= extended[i][i+off];
+                b *= extended[2-i][i + off];
+            }
+            s += a-b;
+        }
+        return s; 
+    }
+    
 }
 
 #endif //MATLIBMAT_H Header Guard
