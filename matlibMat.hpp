@@ -22,6 +22,11 @@ namespace Matlib{ //Matrix Class Member Declerations
         Matrix(const Matrix &m);
         Matrix operator= (const Matrix &m);
 
+        static Matrix<r,r> IdentityLeft();
+        static Matrix<c,c> IdentityRight();
+        Matrix<r,r> identityLeft();
+        Matrix<c,c> identityRight();
+
         double* operator [](int i);
 
         std::string to_string();
@@ -64,6 +69,7 @@ namespace Matlib{ //Matrix Class Member Declerations
         Matrix operator= (const Matrix &m);
 
         static Matrix Identity();
+        Matrix<n,n> identity();
 
         double* operator [](int i);
 
@@ -172,6 +178,42 @@ namespace Matlib{ //NxM Matrix Definitions
     Matrix<r,c> Matrix<r,c>::operator= (const Matrix &m){
         memcpy(elems, m.elems, sizeof(double)*r*c);
         return copy();
+    }
+
+    template<int r, int c>
+    Matrix<r,r> Matrix<r,c>::IdentityLeft(){
+        Matrix<r,r> m;
+        for(int i = 0; i < r; i++){
+            m[i][i] = 1;
+        }
+        return m;
+    }
+
+    template<int r, int c>
+    Matrix<c,c> Matrix<r,c>::IdentityRight(){
+        Matrix<c,c> m;
+        for(int i = 0; i < c; i++){
+            m[i][i] = 1;
+        }
+        return m;
+    }
+
+    template<int r, int c>
+    Matrix<r,r> Matrix<r,c>::identityLeft(){
+        Matrix<r,r> m;
+        for(int i = 0; i < r; i++){
+            m[i][i] = 1;
+        }
+        return m;
+    }
+
+    template<int r, int c>
+    Matrix<c,c> Matrix<r,c>::identityRight(){
+        Matrix<c,c> m;
+        for(int i = 0; i < c; i++){
+            m[i][i] = 1;
+        }
+        return m;
     }
 
     template<int r, int c>
@@ -300,6 +342,15 @@ namespace Matlib{ //NxN Matrix Definitions
 
     template<int n>
     Matrix<n,n> Matrix<n,n>::Identity(){
+        Matrix m;
+        for(int i = 0; i < n; i++){
+            m[i][i] = 1;
+        }
+        return m;
+    }
+
+    template<int n>
+    Matrix<n,n> Matrix<n,n>::identity(){
         Matrix m;
         for(int i = 0; i < n; i++){
             m[i][i] = 1;
